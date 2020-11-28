@@ -15,7 +15,6 @@ jobs:
         operating-system: [ ubuntu-latest ]
         php: [ '5.4', '5.5', '5.6', '7.1', '7.2', '7.3', '7.4', '8.0' ]
     name: PHP ${{ matrix.php }} sample
-
     steps:
       - name: Checkout
       - uses: actions/checkout@master
@@ -26,10 +25,10 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           run: find . -name "*.php" ! -path "./vendor/*" -exec php -l {} 2>&1 \; | grep "syntax error, unexpected"; if find . -name "*.php" ! -path "./vendor/*" -exec php -l {} 2>&1 \; | grep "syntax error, unexpected"; then exit 1; fi
+          
   checks:
     runs-on: ubuntu-latest
     name: Checks
-
     steps:
       - name: Checkout
       - uses: actions/checkout@master
