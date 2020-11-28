@@ -18,6 +18,10 @@ jobs:
       - name: Checking Sign off
         run: if php other/buildTools/check-signed-off.php github | grep "Error:"; then php buildTools/check-signed-off.php github; exit 1; fi
       - name: Checking Licensing
-        run: find . -name "*.php" -exec php buildTools/check-license.php {} 2>&1 \; | grep "Error:"; if find . -name "*.php" -exec php buildTools/check-license.php {} 2>&1 \; | grep "Error:"; then exit 1; fi
+        run: |
+          find . -name "*.php" -exec php buildTools/check-license.php {} 2>&1 \; | grep "Error:"
+          if find . -name "*.php" -exec php buildTools/check-license.php {} 2>&1 \; | grep "Error:"; then exit 1; fi
       - name: Checking End of File
-        run: find . -name "*.php" -exec php buildTools/check-eof.php {} 2>&1 \; | grep "Error:"; if find . -name "*.php" -exec php buildTools/check-eof.php {} 2>&1 \; | grep "Error:"; then exit 1; fi
+        run: |
+          find . -name "*.php" -exec php buildTools/check-eof.php {} 2>&1 \; | grep "Error:";
+          if find . -name "*.php" -exec php buildTools/check-eof.php {} 2>&1 \; | grep "Error:"; then exit 1; fi
