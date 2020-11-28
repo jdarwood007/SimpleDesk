@@ -21,7 +21,7 @@ jobs:
         run: |
           for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
             RESULTS=$(php buildTools/check-license.php ${file} | grep "Error:")
-            if [[ "${RESULTS}" == Error:* ]];
+            if [[ "${RESULTS}" == Error:* ]]; then
               echo "\n${RESULTS}\n"
               ERROR=1
             fi
@@ -30,7 +30,7 @@ jobs:
         run: |
           for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
             RESULTS=$(php buildTools/check-eof.php ${file} | grep "Error:")
-            if [[ "${RESULTS}" == Error:* ]];
+            if [[ "${RESULTS}" == Error:* ]]; then
               echo "\n${RESULTS}\n"
               ERROR=1
             fi
