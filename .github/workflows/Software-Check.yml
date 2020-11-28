@@ -10,7 +10,7 @@ on:
 jobs:          
   checks:
     runs-on: ubuntu-latest
-    name: Checks
+    name: Software Checks
     steps:
       - uses: actions/checkout@master
       - name: Update Build Tools
