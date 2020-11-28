@@ -22,5 +22,10 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
       - run: |
-          find . -name "*.php" ! -path "./vendor/*" -exec php -l {} 2>&1 \; | grep "syntax error, unexpected"
-          if find . -name "*.php" ! -path "./vendor/*" -exec php -l {} 2>&1 \; | grep "syntax error, unexpected"; then exit 1; fi
+          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do
+            RESULTS=$(php -l ${file} || true)
+            if [ "${RESULTS}" != "No syntax errors detected in ${file}" ]; then
+              echo "\n${RESULTS}\n"
+              ERROR=1
+            fi
+          done
