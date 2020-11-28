@@ -1,0 +1,23 @@
+name: Software Checks
+
+on:
+  push:
+    branches: [ smf21, smf20, master ]
+  pull_request:
+    branches: [ smf21, smf20, master ]
+
+  workflow_dispatch:
+jobs:          
+  checks:
+    runs-on: ubuntu-latest
+    name: Checks
+    steps:
+      - uses: actions/checkout@master
+      - name: Update Build Tools
+        run: git submodule foreach git pull origin master
+      - name: Checking Sign off
+        run: if php other/buildTools/check-signed-off.php github | grep "Error:"; then php buildTools/check-signed-off.php github; exit 1; fi
+      - name: Checking Licensing
+        run: find . -name "*.php" -exec php buildTools/check-license.php {} 2>&1 \; | grep "Error:"; if find . -name "*.php" -exec php buildTools/check-license.php {} 2>&1 \; | grep "Error:"; then exit 1; fi
+      - name: Checking End of File
+        run: find . -name "*.php" -exec php buildTools/check-eof.php {} 2>&1 \; | grep "Error:"; if find . -name "*.php" -exec php buildTools/check-eof.php {} 2>&1 \; | grep "Error:"; then exit 1; fi
