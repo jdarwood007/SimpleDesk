@@ -19,9 +19,19 @@ jobs:
         run: if php other/buildTools/check-signed-off.php github | grep "Error:"; then php buildTools/check-signed-off.php github; exit 1; fi
       - name: Checking Licensing
         run: |
-          find . -name "*.php" -exec php buildTools/check-license.php {} 2>&1 \; | grep "Error:"
-          if find . -name "*.php" -exec php buildTools/check-license.php {} 2>&1 \; | grep "Error:"; then exit 1; fi
+          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
+            RESULTS=$(php buildTools/check-license.php ${file} | grep "Error:")
+            if [[ "${RESULTS}" == Error:* ]];
+              echo "\n${RESULTS}\n"
+              ERROR=1
+            fi
+          done
       - name: Checking End of File
         run: |
-          find . -name "*.php" -exec php buildTools/check-eof.php {} 2>&1 \; | grep "Error:";
-          if find . -name "*.php" -exec php buildTools/check-eof.php {} 2>&1 \; | grep "Error:"; then exit 1; fi
+          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
+            RESULTS=$(php buildTools/check-eof.php ${file} | grep "Error:")
+            if [[ "${RESULTS}" == Error:* ]];
+              echo "\n${RESULTS}\n"
+              ERROR=1
+            fi
+          done
