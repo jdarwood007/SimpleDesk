@@ -22,7 +22,7 @@ jobs:
       - name: Update Build Tools
       - run: git submodule foreach git pull origin master
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+      - uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
           run: find . -name "*.php" ! -path "./vendor/*" -exec php -l {} 2>&1 \; | grep "syntax error, unexpected"; if find . -name "*.php" ! -path "./vendor/*" -exec php -l {} 2>&1 \; | grep "syntax error, unexpected"; then exit 1; fi
