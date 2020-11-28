@@ -29,3 +29,4 @@ jobs:
               ERROR=1
             fi
           done
+          exit "${ERROR}"

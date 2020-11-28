@@ -26,6 +26,7 @@ jobs:
               ERROR=1
             fi
           done
+          exit "${ERROR}"
       - name: Checking End of File
         run: |
           for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
@@ -35,3 +36,4 @@ jobs:
               ERROR=1
             fi
           done
+          exit "${ERROR}"
