@@ -23,7 +23,6 @@ jobs:
         run: |
           ERROR=0
           for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do    
-            php .github/workflows/check-license.php ${file}           
             RESULTS=$(php .github/workflows/check-license.php ${file} | grep "Error:")
             if [[ "${RESULTS}" == Error:* ]]; then
               echo "${RESULTS} A" >&2
