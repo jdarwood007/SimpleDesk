@@ -25,7 +25,7 @@ jobs:
           for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do
             RESULTS=$(php -l ${file} || true)
             if [ "${RESULTS}" != "No syntax errors detected in ${file}" ]; then
-              echo "\n${RESULTS}\n"
+              echo "\n${RESULTS}\n" >&2
               ERROR=1
             fi
           done

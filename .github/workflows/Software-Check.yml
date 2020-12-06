@@ -16,23 +16,28 @@ jobs:
       - name: Update Build Tools
         run: git submodule foreach git pull origin master
       - name: Checking Sign off
+        id: check-signoff
         run: if php other/buildTools/check-signed-off.php github | grep "Error:"; then php buildTools/check-signed-off.php github; exit 1; fi
       - name: Checking Licensing
+        id: check-licensing
         run: |
+          ERROR=0
           for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
             RESULTS=$(php buildTools/check-license.php ${file} | grep "Error:")
             if [[ "${RESULTS}" == Error:* ]]; then
-              echo "\n${RESULTS}\n"
+              echo "\n${RESULTS}\n" >&2
               ERROR=1
             fi
           done
           exit "${ERROR}"
       - name: Checking End of File
+        id: check-eof
         run: |
+          ERROR=0
           for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
             RESULTS=$(php buildTools/check-eof.php ${file} | grep "Error:")
             if [[ "${RESULTS}" == Error:* ]]; then
-              echo "\n${RESULTS}\n"
+              echo "\n${RESULTS}\n" >&2
               ERROR=1
             fi
           done
