@@ -34,7 +34,7 @@ jobs:
             fi
           done
           exit "${ERROR}"
-       - name: SyntaxFailure
+      - name: Failure1
         if: ${{ failure() }}
         run: |
           echo ${{ steps.SetupPHP.outputs.stderr }}
