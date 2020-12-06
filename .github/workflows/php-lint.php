@@ -21,6 +21,7 @@ $ignoreFiles = array(
 	'\./db_last_error\.php',
 );
 
+$foundBad = false;
 foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator('.', FilesystemIterator::UNIX_PATHS)) as $currentFile => $fileInfo)
 {
 	// Only check PHP
@@ -36,5 +37,8 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator('.', Files
 	if (preg_match('~No syntax errors detected in ' . $currentFile . '~', $result))
 		continue;
 
+	$foundBad = true;
 	fwrite(STDERR, $result);
 }
+
+exit($foundBad ? 1 : 0);
