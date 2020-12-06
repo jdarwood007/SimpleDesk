@@ -17,7 +17,8 @@ jobs:
     name: PHP ${{ matrix.php }} Syntax Check
     steps:
       - uses: actions/checkout@master
-      - name: SetupPHP
+      - name: Setup PHP
+        id: SetupPHP
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
@@ -35,6 +36,9 @@ jobs:
           done
           exit "${ERROR}"
       - name: Failure1
+        env:
+          VALIDATE: "${{ steps.SetupPHP.outputs.stderr }}\n${{ steps.SetupPHP.outputs.stdout }}"
         if: ${{ failure() }}
         run: |
           echo ${{ steps.SetupPHP.outputs.stderr }}
+          echo ${{ process.env.VALIDATE }}

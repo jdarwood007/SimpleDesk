@@ -46,10 +46,18 @@ jobs:
               echo "${RESULTS}C" >>/dev/stderr
               echo "${RESULTS}D" >>/dev/fd/2
               echo "${RESULTS}E" >>/proc/self/fd/2
+              echo "${RESULTS}" > errors.log
               ERROR=1
             fi
           done
+          echo ::set-output name=errors::`cat errors.log`
           exit "${ERROR}"
+      - name: FailureA
+        if: ${{ failure() }}
+        run: |
+          echo ${{ steps.check-licensing.outputs.errors }}
+          echo ${{ steps.check-licensing.outputs.stderr }}
+          echo ${{ steps.check-licensing.outputs.stdout }}
       - name: Checking End of File
         id: check-eof
         run: |
@@ -71,3 +79,5 @@ jobs:
         run: |
           echo ${{ steps.check-licensingA.outputs.stderr }}
           echo ${{ steps.check-licensing.outputs.stderr }}
+          echo ${{ steps.check-licensing.outputs.errors }}
+
