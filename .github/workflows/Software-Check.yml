@@ -38,7 +38,8 @@ jobs:
         id: check-licensing
         run: |
           ERROR=0
-          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
+          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do
+            php buildTools/check-license.php ${file}
             RESULTS=$(php buildTools/check-license.php ${file} | grep "Error:")
             if [[ "${RESULTS}" == Error:* ]]; then
               echo "${RESULTS}A" >&2
@@ -46,7 +47,7 @@ jobs:
               echo "${RESULTS}C" >>/dev/stderr
               echo "${RESULTS}D" >>/dev/fd/2
               echo "${RESULTS}E" >>/proc/self/fd/2
-              echo "${RESULTS}" > errors.log
+              echo "${RESULTS}" >> errors.log
               ERROR=1
             fi
           done
