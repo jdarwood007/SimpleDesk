@@ -22,23 +22,4 @@ jobs:
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
-      - run: |
-          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do
-            RESULTS=$(php -l ${file} || true)
-            if [ "${RESULTS}" != "No syntax errors detected in ${file}" ]; then
-              echo "${RESULTS}A" >&2
-              echo "${RESULTS}B" 1>&2
-              echo "${RESULTS}C" >>/dev/stderr
-              echo "${RESULTS}D" >>/dev/fd/2
-              echo "${RESULTS}E" >>/proc/self/fd/2
-              ERROR=1
-            fi
-          done
-          exit "${ERROR}"
-      - name: Failure1
-        if: ${{ failure() }}
-        env:
-          VALIDATE: "${{ steps.SetupPHP.outputs.stderr }}\n${{ steps.SetupPHP.outputs.stdout }}"
-        run: |
-          echo ${{ steps.SetupPHP.outputs.stderr }}
-          echo ${{ process.env.VALIDATE }}
+      - run: php .github/workflows/php-lint.php
