@@ -66,3 +66,8 @@ jobs:
             fi
           done
           exit "${ERROR}"
+       - name: Failure1
+        if: ${{ failure() }}
+        run: |
+          echo ${{ steps.check-licensingA.outputs.stderr }}
+          echo ${{ steps.check-licensing.outputs.stderr }}
