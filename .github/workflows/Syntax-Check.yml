@@ -39,6 +39,6 @@ jobs:
         env:
           VALIDATE: "${{ steps.SetupPHP.outputs.stderr }}\n${{ steps.SetupPHP.outputs.stdout }}"
         if: ${{ failure() }}
-      - run: |
+        run: |
           echo ${{ steps.SetupPHP.outputs.stderr }}
           echo ${{ process.env.VALIDATE }}

@@ -22,14 +22,15 @@ jobs:
         id: check-licensingA
         run: |
           ERROR=0
-          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
+          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do    
+            php .github/workflows/check-license.php ${file}           
             RESULTS=$(php .github/workflows/check-license.php ${file} | grep "Error:")
             if [[ "${RESULTS}" == Error:* ]]; then
-              echo "${RESULTS}A" >&2
-              echo "${RESULTS}B" 1>&2
-              echo "${RESULTS}C" >>/dev/stderr
-              echo "${RESULTS}D" >>/dev/fd/2
-              echo "${RESULTS}E" >>/proc/self/fd/2
+              echo "${RESULTS} A" >&2
+              echo "${RESULTS} B" 1>&2
+              echo "${RESULTS} C" >>/dev/stderr
+              echo "${RESULTS} D" >>/dev/fd/2
+              echo "${RESULTS} E" >>/proc/self/fd/2
               ERROR=1
             fi
           done
@@ -42,11 +43,11 @@ jobs:
             php buildTools/check-license.php ${file}
             RESULTS=$(php buildTools/check-license.php ${file} | grep "Error:")
             if [[ "${RESULTS}" == Error:* ]]; then
-              echo "${RESULTS}A" >&2
-              echo "${RESULTS}B" 1>&2
-              echo "${RESULTS}C" >>/dev/stderr
-              echo "${RESULTS}D" >>/dev/fd/2
-              echo "${RESULTS}E" >>/proc/self/fd/2
+              echo "${RESULTS} A" >&2
+              echo "${RESULTS} B" 1>&2
+              echo "${RESULTS} C" >>/dev/stderr
+              echo "${RESULTS} D" >>/dev/fd/2
+              echo "${RESULTS} E" >>/proc/self/fd/2
               echo "${RESULTS}" >> errors.log
               ERROR=1
             fi
