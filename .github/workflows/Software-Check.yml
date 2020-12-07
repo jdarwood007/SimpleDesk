@@ -22,7 +22,7 @@ jobs:
         run: php ./buildTools/check-signed-off.php github
       - name: Checking Licensing
         id: check-licensing
-        run: php .github/workflows/check-license-master.php ./
+        run: php ./buildTools/check-license-master.php ./
       - name: Checking End of File
         id: check-eof
         run: php ./buildTools/check-eof-master.php ./
