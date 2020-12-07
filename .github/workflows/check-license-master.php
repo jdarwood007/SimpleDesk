@@ -29,5 +29,11 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($curDir, F
 	fwrite(STDERR, $result);
 }
 
+if (empty($foundBad))
+{
+	fwrite(STDERR, 'Found Bad:' . $foundBad ? '1' : '0');
+	exit(0);
+}
+
 fwrite(STDERR, 'Found Bad:' . $foundBad ? '1' : '0');
 exit(1);
