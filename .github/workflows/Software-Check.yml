@@ -17,68 +17,10 @@ jobs:
         run: git submodule foreach git pull origin master
       - name: Checking Sign off
         id: check-signoff
-        run: if php other/buildTools/check-signed-off.php github | grep "Error:"; then php buildTools/check-signed-off.php github; exit 1; fi
-      - name: Checking Licensing A
-        id: check-licensingA
-        run: |
-          ERROR=0
-          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do    
-            RESULTS=$(php .github/workflows/check-license.php ${file} | grep "Error:")
-            if [[ "${RESULTS}" == Error:* ]]; then
-              echo "${RESULTS} A" >&2
-              echo "${RESULTS} B" 1>&2
-              echo "${RESULTS} C" >>/dev/stderr
-              echo "${RESULTS} D" >>/dev/fd/2
-              echo "${RESULTS} E" >>/proc/self/fd/2
-              ERROR=1
-            fi
-          done
-          exit "${ERROR}"
+        run: buildTools/check-signed-off.php ./
       - name: Checking Licensing
         id: check-licensing
-        run: |
-          ERROR=0
-          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do
-            php buildTools/check-license.php ${file}
-            RESULTS=$(php buildTools/check-license.php ${file} | grep "Error:")
-            if [[ "${RESULTS}" == Error:* ]]; then
-              echo "${RESULTS} A" >&2
-              echo "${RESULTS} B" 1>&2
-              echo "${RESULTS} C" >>/dev/stderr
-              echo "${RESULTS} D" >>/dev/fd/2
-              echo "${RESULTS} E" >>/proc/self/fd/2
-              echo "${RESULTS}" >> errors.log
-              ERROR=1
-            fi
-          done
-          echo ::set-output name=errors::`cat errors.log`
-          exit "${ERROR}"
-      - name: FailureA
-        if: ${{ failure() }}
-        run: |
-          echo ${{ steps.check-licensing.outputs.errors }}
-          echo ${{ steps.check-licensing.outputs.stderr }}
-          echo ${{ steps.check-licensing.outputs.stdout }}
+        run: php buildTools/check-license-master.php ./
       - name: Checking End of File
         id: check-eof
-        run: |
-          ERROR=0
-          for file in $(find . -type f -name "*.php" ! -path "./vendor/*"); do              
-            RESULTS=$(php buildTools/check-eof.php ${file} | grep "Error:")
-            if [[ "${RESULTS}" == Error:* ]]; then
-              echo "${RESULTS}A" >&2
-              echo "${RESULTS}B" 1>&2
-              echo "${RESULTS}C" >>/dev/stderr
-              echo "${RESULTS}D" >>/dev/fd/2
-              echo "${RESULTS}E" >>/proc/self/fd/2
-              ERROR=1
-            fi
-          done
-          exit "${ERROR}"
-      - name: Failure1
-        if: ${{ failure() }}
-        run: |
-          echo ${{ steps.check-licensingA.outputs.stderr }}
-          echo ${{ steps.check-licensing.outputs.stderr }}
-          echo ${{ steps.check-licensing.outputs.errors }}
-
+        run: php buildTools/check-eof-master.php ./
