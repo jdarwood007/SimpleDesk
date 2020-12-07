@@ -8,7 +8,7 @@ on:
 
   workflow_dispatch:
 jobs:          
-  checks:
+  check-signedoff:
     runs-on: ubuntu-latest
     name: Check Signed Off
     steps:
@@ -20,7 +20,7 @@ jobs:
       - name: Checking Sign off
         id: check-signoff
         run: php ./buildTools/check-signed-off.php github
-  checks:
+  check-licensing:
     runs-on: ubuntu-latest
     name: Check Licensing
     steps:
@@ -32,7 +32,7 @@ jobs:
       - name: Checking Licensing
         id: check-licensing
         run: php ./buildTools/check-license-master.php ./
-  checks:
+  check-eof:
     runs-on: ubuntu-latest
     name: Check End of File
     steps:
