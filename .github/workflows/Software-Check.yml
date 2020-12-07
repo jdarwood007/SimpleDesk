@@ -10,7 +10,7 @@ on:
 jobs:          
   checks:
     runs-on: ubuntu-latest
-    name: Software Checks
+    name: Check Signed Off
     steps:
       - uses: actions/checkout@master
         with:
@@ -20,9 +20,27 @@ jobs:
       - name: Checking Sign off
         id: check-signoff
         run: php ./buildTools/check-signed-off.php github
+  checks:
+    runs-on: ubuntu-latest
+    name: Check Licensing
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: true
+      - name: Update Build Tools
+        run: git submodule foreach git pull origin master
       - name: Checking Licensing
         id: check-licensing
         run: php ./buildTools/check-license-master.php ./
+  checks:
+    runs-on: ubuntu-latest
+    name: Check End of File
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: true
+      - name: Update Build Tools
+        run: git submodule foreach git pull origin master
       - name: Checking End of File
         id: check-eof
         run: php ./buildTools/check-eof-master.php ./
