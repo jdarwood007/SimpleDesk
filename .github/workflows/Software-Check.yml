@@ -19,10 +19,7 @@ jobs:
         run: git submodule foreach git pull origin master
       - name: Checking Sign off
         id: check-signoff
-        run: |
-          pwd
-          ls -a
-          ./buildTools/check-signed-off.php ./
+        run: php ./buildTools/check-signed-off.php github
       - name: Checking Licensing
         id: check-licensing
         run: php ./buildTools/check-license-master.php ./
